@@ -1,0 +1,9 @@
+fastapi
+uvicorn[standard]
+beanie
+pydantic-settings
+email-validator
+python-multipart
+pytest
+pytest-asyncio
+httpx
