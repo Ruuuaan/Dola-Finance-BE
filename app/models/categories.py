@@ -1,2 +1,9 @@
-def hello() -> str:
-    return f"hello world from model: {__name__}"
+from beanie import Document
+
+
+class Categories(Document):
+    name: str
+
+class Settings: 
+    name = "Categories"
+   
