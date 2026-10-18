@@ -1,9 +1,27 @@
-from fastapi import APIRouter
+from typing import Literal, Optional
+from beanie import PydanticObjectId
+from fastapi import APIRouter, Depends, HTTPException
 
-name = __name__.rsplit(".", 1)[-1]
-router = APIRouter(prefix=f"/{name}", tags=[name])
+
+router = APIRouter(prefix="/analytics", tags=["Analytics"])
 
 
-@router.get("/hello")
-def hello():
-    return {"message": f"hello world from router: {__name__}"}
+"""
+@router.get("/summary")
+async def analytics_summary():
+    try:
+        
+    except Exception as e:
+        raise HTTPException(status_code=500, detail="failed to get analytic summary")"""
+
+
+
+    
+"""
+@router.get("/insights")
+async def analytics_insights():
+    try:
+
+    except Exception as e: 
+        raise HTTPException(status_code=500, detail="failed to fetch analytic insight")"""
+

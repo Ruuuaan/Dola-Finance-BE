@@ -3,7 +3,7 @@ from beanie import Document, PydanticObjectId
 from pydantic import Field
 
 
-class Goals(Document):
+class GoalModel(Document):
     user_id:PydanticObjectId
     name: str
     target_amount: int

@@ -7,3 +7,4 @@ class CategoryRead(BaseModel):
 
     id:PydanticObjectId
     name: str
+    
