@@ -5,9 +5,10 @@ from pydantic import Field
 
 class Goals(Document):
     user_id:PydanticObjectId
-    name: str
+    goal_name: str
     target_amount: int
-    saved_amount: int 
+    saved_amount: int = 0
+    target_date:datetime
     created_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
 
 class Settings: 

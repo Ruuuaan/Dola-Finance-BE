@@ -1,8 +1,18 @@
+
+from contextlib import asynccontextmanager
+
 from fastapi import FastAPI
+from app.routers import goals
+from app.db.database import init_db
+from app.routers import goals
 
-app = FastAPI()
+
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    await init_db()
+    yield
 
 
-@app.get("/")
-def root():
-    return {"message": "hello world from main.py"}
+app = FastAPI(lifespan=lifespan)
+
+app.include_router(goals.router)
