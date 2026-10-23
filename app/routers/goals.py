@@ -1,6 +1,7 @@
 from fastapi import APIRouter, Depends, HTTPException
-from app.schemas.goal import Read_Goal,Delete_Goal
+from app.schemas.goal import Read_Goal,Delete_Goal,UserGoals
 from app.models.goal import GoalModel
+from app.models.user import UserModel
 from datetime import datetime
 from beanie import PydanticObjectId
 from typing import List
@@ -11,7 +12,11 @@ name = __name__.rsplit(".", 1)[-1]
 router = APIRouter(prefix="/goal", tags=["Goals"])
 
 @router.post("/create", response_model=Read_Goal)
-async def create_goal(goal_name:str,target_amount:int, target_date:datetime) -> dict:
+async def create_goal(
+    goal_name:str,
+    target_amount:int,
+    target_date:datetime
+) -> dict:
     try:
         goal = GoalModel (
         user_id = PydanticObjectId(),
@@ -32,10 +37,26 @@ async def update_goal(id: PydanticObjectId, user_id:int,):
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 """
-@router.get("/", response_model = List[Read_Goal])
-async def get_goal_records():
+@router.get("/", response_model = UserGoals)
+async def get_goal_records(
+    user_id:PydanticObjectId
+    ):
     try:
-        return await GoalModel.find_all().to_list()
+        #fetch the user info
+        user_data = await UserModel.get(user_id)
+        if not user_data:
+            raise HTTPException(status_code=404, detail="user with this goal is not found")
+        #fetching goals that is inside the current user?
+        user_goals = await GoalModel.find(
+        GoalModel.user_id == user_id).to_list()
+
+        response_data={
+            "user_id": user_data.id,
+            "username": user_data.username,
+            "goals":user_goals
+                
+        }
+        return response_data
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 
